@@ -4,45 +4,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PongGame extends JPanel implements KeyListener,
         ActionListener, Runnable {
     private boolean start;
-    // movement keys..
+
     static boolean right = false;
     static boolean left = false;
-    // variables declaration for ball...
+
     int ballx = 160;
     int bally = 218;
-    // variables declaration for ball.
-    // =======================================
-    // variables declaration for bat..........
+
     int batx = 160;
     int baty = 245;
-    // variables declaration for bat...........
-    // ========================================
-    // variables declaration for brick.........
+
     int brickx = 70;
     int bricky = 50;
-    // variables declaration for brick...............................
-    // ===============================================================
-    // declaring ball, paddle,bricks
+
     Rectangle Ball = new Rectangle(ballx, bally, 5, 5);
     Rectangle Bat = new Rectangle(batx, baty, 40, 5);
 
-    int lives = 3; //default amount of lives
+    int lives = 3;
     int amount = 12; //change this value to update amount of bricks
     Rectangle[] Brick = new Rectangle[amount];
     ArrayList<ArrayList<Float>> color = new ArrayList<>();
-    Thread t;
 
     public PongGame() {
         start = false;
         addKeyListener(this);
         setFocusable(true);
-        t = new Thread(this);
+        Thread t = new Thread(this);
         t.start();
     }
 
@@ -62,27 +54,27 @@ public class PongGame extends JPanel implements KeyListener,
 
     }
 
-    // declaring ball, paddle,bricks
+
     @Override
     public void paint(Graphics g) {
         Font f = new Font("Arial", Font.BOLD, 10);
         g.setFont(f);
-        //draw play area
+
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, 350, 450);
-        //draw bottom
+
         g.setColor(Color.GRAY);
         g.fillRect(0, 251, 450, 200);
-        //draw outline
+
         g.setColor(Color.red);
         g.drawRect(0, 0, 343, 250);
-        //draw ball (Task 1)
+
         g.setColor(Color.blue);
         g.fillOval(Ball.x, Ball.y, Ball.width, Ball.height);
-        //draw paddle (Task 2)
+
         g.fill3DRect(Bat.x, Bat.y, Bat.width, Bat.height, true);
-        //paint brick (Task 3)
-        for (int i = 0; i < Brick.length; i++) { //added color adding code
+
+        for (int i = 0; i < Brick.length; i++) {
             if (Brick[i] != null) {
                 ArrayList<Float> colorIndex = color.get(i);
                 g.setColor(new Color(colorIndex.get(0), colorIndex.get(1), colorIndex.get(2)));
@@ -90,6 +82,7 @@ public class PongGame extends JPanel implements KeyListener,
                         Brick[i].height, true);
             }
         }
+
         g.setColor(Color.white);
         /*
         I think there's some performance hits by concatenating the string so much but whatever
@@ -108,40 +101,46 @@ public class PongGame extends JPanel implements KeyListener,
 
     }
 
-    // /...Game Loop...................
+    public void paintBrick() {
+        int index = 5;
+        for (int i = 0; i < Brick.length; i++) {
+            ArrayList<Float> colorIndex = new ArrayList<>();
+            colorIndex.add((float) Math.random());
+            colorIndex.add((float) Math.random());
+            colorIndex.add((float) Math.random());
+            color.add(colorIndex);
+            Brick[i] = new Rectangle(brickx, bricky, 30, 10);
+            if (i == index) {
+                brickx = 39;
+                bricky += 12;
+                index = index + 6;
+            }
 
-    // /////////////////// When ball strikes borders......... it
-    // reverses......==>
+            brickx += 31;
+        }
+    }
+
     int movex = -1;
     int movey = -1;
     boolean ballFallDown = false;
     boolean bricksOver = false;
     int count = 0;
-    //use this string to report status
+
     String status;
 
-    //run() method ONLY run at the beginning of program
     @Override
     public void run() {
 
-        // //////////// =====Creating bricks for the game===>.....
         paintBrick();
-        // ===========BRICKS created for the game new ready to use===
 
-        // ====================================================
-        // == ball reverses when touches the brick=======
-
-        while (ballFallDown == false && bricksOver == false) { //replaced the "== false" statements with ! because, why honestly
-        // routine to create collision  (Task 4)
+        while (!ballFallDown && !bricksOver) {
             if (start) {
-                // /////////// =================================
 
-                if (count == Brick.length) {// check if ball hits all bricks
+                if (count == Brick.length) {
                     status = "YOU WON THE GAME";
                     bricksOver = true;
                     repaint();
                 }
-                // /////////// =================================
                 repaint();
                 Ball.x += movex;
                 Ball.y += movey;
@@ -180,33 +179,54 @@ public class PongGame extends JPanel implements KeyListener,
                 } else if (Bat.x >= 298) {
                     Bat.x = 298;
                 }
-                // /===== Ball reverses when strikes the bat
                 if (Ball.intersects(Bat)) {
                     movey = -movey;
                 }
-                // //=====================================
-                // ....ball reverses when touches left and right boundary
+
                 if (Ball.x <= 0 || Ball.x + Ball.height >= 343) {
                     movex = -movex;
-                }// if ends here
-                if (Ball.y <= 0) {// ////////////////|| bally + Ball.height >= 250
+                }
+                if (Ball.y <= 0) {
                     movey = -movey;
-                }// if ends here.....
-            //Game over routine (Task 5)
+                }
 
             }
             try {
-                Thread.sleep(8); //change refresh speed
+                Thread.sleep(8);
             } catch (Exception ex) {
-            }// try catch ends here
+            }
 
-        }// while loop ends here
+        }
 
     }
 
-    // loop ends here
+    public void restart() {
 
-    // ///////..... HANDLING KEY EVENTS................//
+        requestFocus(true);
+        ballx = 160;
+        bally = 218;
+
+        batx = 160;
+        baty = 245;
+
+        brickx = 70;
+        bricky = 50;
+
+        Ball = new Rectangle(ballx, bally, 5, 5);
+        Bat = new Rectangle(batx, baty, 40, 5);
+        Brick = new Rectangle[amount];
+
+        movex = -1;
+        movey = -1;
+        ballFallDown = false;
+        bricksOver = false;
+        count = 0;
+        status = null;
+
+        paintBrick();
+        repaint();
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -242,62 +262,6 @@ public class PongGame extends JPanel implements KeyListener,
             start = true;
             this.restart();
         }
-    }
-
-    //Method to paint your brick pattern (Task 6)
-    public void paintBrick() { //modified to scale, also assign colors once over the course of the program
-        int index = 5;
-        for (int i = 0; i < Brick.length; i++) {
-            ArrayList<Float> colorIndex = new ArrayList<>();
-            colorIndex.add((float) Math.random());
-            colorIndex.add((float) Math.random());
-            colorIndex.add((float) Math.random());
-            color.add(colorIndex);
-            Brick[i] = new Rectangle(brickx, bricky, 30, 10);
-            if (i == index) {
-                brickx = 39;
-                bricky += 12;
-                index = index + 6;
-            }
-
-            brickx += 31;
-        }
-    }
-
-    public void restart() {
-
-        requestFocus(true);
-        // ..............
-        // variables declaration for ball.................................
-        ballx = 160;
-        bally = 218;
-        // variables declaration for ball.................................
-        // ===============================================================
-        // variables declaration for bat..................................
-        batx = 160;
-        baty = 245;
-        // variables declaration for bat..................................
-        // ===============================================================
-        // variables declaration for brick...............................
-        brickx = 70;
-        bricky = 50;
-        // variables declaration for brick...............................
-        // ===============================================================
-        // declaring ball, paddle,bricks
-        Ball = new Rectangle(ballx, bally, 5, 5);
-        Bat = new Rectangle(batx, baty, 40, 5);
-        // Rectangle Brick;// = new Rectangle(brickx, bricky, 30, 10);
-        Brick = new Rectangle[amount];
-
-        movex = -1;
-        movey = -1;
-        ballFallDown = false;
-        bricksOver = false;
-        count = 0;
-        status = null;
-
-        paintBrick();
-        repaint();
     }
 }
 
