@@ -27,7 +27,7 @@ public class PongGame extends JPanel implements KeyListener,
 
     int lives = 3;
     int amount = 12; //change this value to update amount of bricks
-    Rectangle[] Brick = new Rectangle[amount];
+    ArrayList<Rectangle> Brick = new ArrayList<>();
     ArrayList<ArrayList<Float>> color = new ArrayList<>();
 
     public PongGame() {
@@ -74,12 +74,12 @@ public class PongGame extends JPanel implements KeyListener,
 
         g.fill3DRect(Bat.x, Bat.y, Bat.width, Bat.height, true);
 
-        for (int i = 0; i < Brick.length; i++) {
-            if (Brick[i] != null) {
+        for (int i = 0; i < Brick.size(); i++) {
+            if (Brick.get(i) != null) {
                 ArrayList<Float> colorIndex = color.get(i);
                 g.setColor(new Color(colorIndex.get(0), colorIndex.get(1), colorIndex.get(2)));
-                g.fill3DRect(Brick[i].x, Brick[i].y, Brick[i].width,
-                        Brick[i].height, true);
+                g.fill3DRect(Brick.get(i).x, Brick.get(i).y, Brick.get(i).width,
+                        Brick(i).height, true);
             }
         }
 
@@ -109,7 +109,8 @@ public class PongGame extends JPanel implements KeyListener,
             colorIndex.add((float) Math.random());
             colorIndex.add((float) Math.random());
             color.add(colorIndex);
-            Brick[i] = new Rectangle(brickx, bricky, 30, 10);
+                
+            Brick.add(new Rectangle(brickx, bricky, 30, 10));
             if (i == index) {
                 brickx = 39;
                 bricky += 12;
