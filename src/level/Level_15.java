@@ -10,24 +10,24 @@ public class Level_15 implements Level{
     @Override
     public ArrayList<Rectangle> paintBrick() {
         ArrayList<Rectangle> Brick = new ArrayList<>();
-        int brickx = 70;
+        int brickx = 55;
         int bricky = 50;
-        int index = 8;
+        int index = 11;
 
-        for (int i = 0; i < 18; i++) {
+        for (int i = 0; i < 36; i++) {
             ArrayList<Float> colorIndex = new ArrayList<>();
-            colorIndex.add((float) 0.8);
-            colorIndex.add((float) 0.8);
-            colorIndex.add((float) 0.8);
+            colorIndex.add((float) Math.random());
+            colorIndex.add((float) Math.random());
+            colorIndex.add((float) Math.random());
             color.add(colorIndex);
 
-            Brick.add(new Rectangle(brickx, bricky, 30, 10));
+            Brick.add(new Rectangle(brickx, bricky, 15, 10));
             if (i == index) {
-                brickx = 15;
-                bricky += 12;
-                index = index + 6;
+                brickx = 39;
+                bricky += 11;
+                index = index + 12;
             }
-            brickx += 31;
+            brickx += 15;
 
         }
         return Brick;

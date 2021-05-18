@@ -20,8 +20,6 @@ public class PongGame extends JPanel implements KeyListener,
 
     List<Level> levels = getLevels();
 
-    // the below should be altered by the Level
-
     Rectangle Ball = new Rectangle(160, 218, 5, 5);
     Rectangle Bat;
 
@@ -57,10 +55,16 @@ public class PongGame extends JPanel implements KeyListener,
 
     }
 
+    /**
+     * Loads levels in the level directory reflectively. Ignores Level.java and anything that doesn't start with .java
+     * Also will throw a fit if the object in level doesn't implement Level
+     *
+     * @return list of levels
+     */
     public List<Level> getLevels() {
         File path = new File(".\\src\\level");
         ArrayList<String> list = new ArrayList<>();
-        ArrayList<Level> levels = new ArrayList<>();
+        ArrayList<Level> temporaryLevelList = new ArrayList<>();
         for (String file : Objects.requireNonNull(path.list())) {
             if (file.equals("Level.java")) {
                 continue;
@@ -73,13 +77,13 @@ public class PongGame extends JPanel implements KeyListener,
             try {
                 Object name = Class.forName(levelName).getConstructor().newInstance();
                 if (name instanceof Level) {
-                    levels.add((Level) name);
+                    temporaryLevelList.add((Level) name);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return levels;
+        return temporaryLevelList;
     }
 
     @Override
@@ -109,6 +113,7 @@ public class PongGame extends JPanel implements KeyListener,
             levelBrickCount = 0;
             Brick = levels.get(level).paintBrick();
         }
+
         for (int i = 0; i < Brick.size(); i++) {
             if (Brick.get(i) != null) {
                 ArrayList<Float> colorIndex = levels.get(level).getColors().get(i);
