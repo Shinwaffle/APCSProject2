@@ -47,9 +47,9 @@ public class Level_1 implements Level{
     public ArrayList<ArrayList<Integer>> getColors() {
         for (int i = 0; i < 12; i++) {
             ArrayList<Integer> colorIndex = new ArrayList<>();
-            colorIndex.add((int) Math.random()*256);
-            colorIndex.add((int) Math.random()*256);
-            colorIndex.add((int) Math.random()*256);
+            colorIndex.add((int) (Math.random()*256));
+            colorIndex.add((int) (Math.random()*256));
+            colorIndex.add((int) (Math.random()*256));
             color.add(colorIndex);
         }
         return color;
