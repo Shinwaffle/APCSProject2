@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Level_1 implements Level{
 
-    ArrayList<ArrayList<Float>> color = new ArrayList<>();
+    ArrayList<ArrayList<Integer>> color = new ArrayList<>();
     int amount = 12;
 
     @Override
@@ -16,12 +16,7 @@ public class Level_1 implements Level{
         int index = 5;
 
         for (int i = 0; i < amount; i++) {
-            ArrayList<Float> colorIndex = new ArrayList<>();
-            colorIndex.add((float) Math.random());
-            colorIndex.add((float) Math.random());
-            colorIndex.add((float) Math.random());
-            color.add(colorIndex);
-
+            ArrayList<Integer> colorIndex = new ArrayList<>();
             Brick.add(new Rectangle(brickx, bricky, 30, 10));
             if (i == index) {
                 brickx = 39;
@@ -50,12 +45,12 @@ public class Level_1 implements Level{
     }
 
     @Override
-    public ArrayList<ArrayList<Float>> getColors() {
+    public ArrayList<ArrayList<Integer>> getColors() {
         for (int i = 0; i < 12; i++) {
-            ArrayList<Float> colorIndex = new ArrayList<>();
-            colorIndex.add((float) Math.random());
-            colorIndex.add((float) Math.random());
-            colorIndex.add((float) Math.random());
+            ArrayList<Integer> colorIndex = new ArrayList<>();
+            colorIndex.add((int) Math.random()*256);
+            colorIndex.add((int) Math.random()*256);
+            colorIndex.add((int) Math.random()*256);
             color.add(colorIndex);
         }
         return color;
