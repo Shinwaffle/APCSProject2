@@ -15,12 +15,6 @@ public class Level_15 implements Level{
         int index = 17;
 
         for (int i = 0; i < 48; i++) {
-            ArrayList<Integer> colorIndex = new ArrayList<>();
-            colorIndex.add((int) Math.random()*256);
-            colorIndex.add((int) Math.random()*256);
-            colorIndex.add((int) Math.random()*256);
-            color.add(colorIndex);
-
             Brick.add(new Rectangle(brickx, bricky, 15, 10));
             if (i == index) {
                 brickx = 55;
@@ -52,9 +46,9 @@ public class Level_15 implements Level{
     public ArrayList<ArrayList<Integer>> getColors() {
         for (int i = 0; i < 48; i++) {
         ArrayList<Integer> colorIndex = new ArrayList<>();
-            colorIndex.add((int) Math.random()*256);
-            colorIndex.add((int) Math.random()*256);
-            colorIndex.add((int) Math.random()*256);
+            colorIndex.add((int) (Math.random()*256));
+            colorIndex.add((int) (Math.random()*256));
+            colorIndex.add((int) (Math.random()*256));
             color.add(colorIndex);
         }
         return color;
