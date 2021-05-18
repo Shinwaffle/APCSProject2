@@ -23,11 +23,11 @@ public class Level_15 implements Level{
 
             Brick.add(new Rectangle(brickx, bricky, 15, 10));
             if (i == index) {
-                brickx = 39;
-                bricky += 11;
+                brickx = 55;
+                bricky += 12;
                 index = index + 12;
             }
-            brickx += 15;
+            brickx += 17;
 
         }
         return Brick;
@@ -50,6 +50,13 @@ public class Level_15 implements Level{
 
     @Override
     public ArrayList<ArrayList<Integer>> getColors() {
+        for (int i = 0; i < 48; i++) {
+        ArrayList<Integer> colorIndex = new ArrayList<>();
+            colorIndex.add((int) Math.random()*256);
+            colorIndex.add((int) Math.random()*256);
+            colorIndex.add((int) Math.random()*256);
+            color.add(colorIndex);
+        }
         return color;
     }
 
