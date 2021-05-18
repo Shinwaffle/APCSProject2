@@ -16,7 +16,6 @@ public class Level_1 implements Level{
         int index = 5;
 
         for (int i = 0; i < amount; i++) {
-            ArrayList<Integer> colorIndex = new ArrayList<>();
             Brick.add(new Rectangle(brickx, bricky, 30, 10));
             if (i == index) {
                 brickx = 39;
