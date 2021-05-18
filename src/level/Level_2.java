@@ -52,7 +52,7 @@ public class Level_2 implements Level{
             colorIndex.add(115);
             color.add(colorIndex);
               
-            } else if (i <= 16) {
+            } else if (i <= 17) {
              ArrayList<Integer> colorIndex = new ArrayList<>();
             colorIndex.add(179);
             colorIndex.add(104);
