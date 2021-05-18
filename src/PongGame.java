@@ -127,7 +127,7 @@ public class PongGame extends JPanel implements KeyListener,
 
         for (int i = 0; i < Brick.size(); i++) {
             if (Brick.get(i) != null) {
-                ArrayList<Float> colorIndex = levels.get(level).getColors().get(i);
+                ArrayList<Integer> colorIndex = levels.get(level).getColors().get(i);
                 g.setColor(new Color(colorIndex.get(0), colorIndex.get(1), colorIndex.get(2)));
                 g.fill3DRect(Brick.get(i).x, Brick.get(i).y, Brick.get(i).width,
                         Brick.get(i).height, true);
