@@ -27,7 +27,7 @@ public interface Level {
   /*
   Returns an arraylist of arraylists, each arraylist having an r, g, and b value.
    */
-  ArrayList<ArrayList<Float>> getColors();
+  ArrayList<ArrayList<Integer>> getColors();
 
   /**
    * An integer a user can enter into a dialog box to jump to this level
