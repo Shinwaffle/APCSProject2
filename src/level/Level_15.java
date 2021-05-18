@@ -15,7 +15,7 @@ public class Level_15 implements Level{
         int index = 17;
 
         for (int i = 0; i < 48; i++) {
-            ArrayList<Float> colorIndex = new ArrayList<>();
+            ArrayList<Integer> colorIndex = new ArrayList<>();
             colorIndex.add((int) Math.random()*256);
             colorIndex.add((int) Math.random()*256);
             colorIndex.add((int) Math.random()*256);
