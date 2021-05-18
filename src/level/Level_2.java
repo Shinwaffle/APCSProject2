@@ -66,9 +66,9 @@ public class Level_2 implements Level{
     }
 
     @Override
-    public ArrayList<ArrayList<Float>> getColors() {
+    public ArrayList<ArrayList<Integer>> getColors() {
       for (int i = 0; i < 30; i++) {
-        f (i <= 5) {
+        if (i <= 5) {
             ArrayList<Integer> colorIndex = new ArrayList<>();
             colorIndex.add(209);
             colorIndex.add(33);
