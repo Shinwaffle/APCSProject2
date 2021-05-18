@@ -27,7 +27,7 @@ public class Level_2 implements Level{
 
     @Override
     public int getBallSpeed() {
-        return 10;
+        return 6;
     }
 
     @Override

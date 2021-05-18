@@ -124,10 +124,10 @@ public class PongGame extends JPanel implements KeyListener,
             levelBrickCount = 0;
             Brick = levels.get(level).paintBrick();
         }
-
+        ArrayList<ArrayList<Integer>> colors = levels.get(level).getColors();
         for (int i = 0; i < Brick.size(); i++) {
             if (Brick.get(i) != null) {
-                ArrayList<Integer> colorIndex = levels.get(level).getColors().get(i);
+                ArrayList<Integer> colorIndex = colors.get(i);
                 g.setColor(new Color(colorIndex.get(0), colorIndex.get(1), colorIndex.get(2)));
                 g.fill3DRect(Brick.get(i).x, Brick.get(i).y, Brick.get(i).width,
                         Brick.get(i).height, true);
@@ -255,7 +255,6 @@ public class PongGame extends JPanel implements KeyListener,
         lives = 3;
         totalCount = 0;
         levelBrickCount = 0;
-        this.level = level;
         status = null;
 
         repaint();
@@ -294,7 +293,7 @@ public class PongGame extends JPanel implements KeyListener,
         String str = e.getActionCommand();
         if (str.equals("restart")) {
             start = true;
-            this.restart(0);
+            this.restart(level);
         }
         if (str.equals("level selection")) {
 
@@ -315,6 +314,7 @@ public class PongGame extends JPanel implements KeyListener,
                     if (codes.containsKey(code)) {
                         newLevelLoad = true;
                         start = true;
+                        level = codes.get(code);
                         restart(codes.get(code));
                         break;
                     }
