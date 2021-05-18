@@ -256,7 +256,6 @@ public class PongGame extends JPanel implements KeyListener,
         totalCount = 0;
         levelBrickCount = 0;
         status = null;
-        levels.get(level).paintBrick();
 
         repaint();
     }
