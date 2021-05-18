@@ -1,3 +1,5 @@
+import level.Level;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,10 +8,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
-import level.Level;
 
 public class PongGame extends JPanel implements KeyListener,
         ActionListener, Runnable {
@@ -25,33 +26,43 @@ public class PongGame extends JPanel implements KeyListener,
 
     int lives = 3;
     int level = 0;
+    boolean newLevelLoad = false;
+    HashMap<Integer, Integer> codes = new HashMap<>();
+
     ArrayList<Rectangle> Brick = new ArrayList<>();
+    Thread t;
 
     public PongGame() {
-        for (Rectangle b : levels.get(0).paintBrick()) {
-            Brick.add(b);
-        }
+        Brick.addAll(levels.get(0).paintBrick());
+        int i = 0;
+        for (Level d : levels) {
+            codes.put(d.getCode(), i);
+            i++;
+        } // i could restructure this to be way better but whatever its 11 pm
         Bat = levels.get(0).getBat();
         start = false;
         addKeyListener(this);
         setFocusable(true);
-        Thread t = new Thread(this);
+        t = new Thread(this);
         t.start();
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         PongGame game = new PongGame();
-        JButton button = new JButton("restart");
+        JButton restartButton = new JButton("restart");
+        JButton levelButton = new JButton("level selection");
         frame.setSize(350, 450);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.add(game);
-        frame.add(button, BorderLayout.SOUTH);
+        frame.add(restartButton, BorderLayout.SOUTH);
+        frame.add(levelButton, BorderLayout.NORTH);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
-        button.addActionListener(game);
+        restartButton.addActionListener(game);
+        levelButton.addActionListener(game);
 
     }
 
@@ -70,7 +81,7 @@ public class PongGame extends JPanel implements KeyListener,
                 continue;
             }
             if (file.endsWith(".java")) {
-                list.add("level." + file.substring(0, file.length()-5));
+                list.add("level." + file.substring(0, file.length() - 5));
             }
         }
         for (String levelName : list) {
@@ -127,7 +138,7 @@ public class PongGame extends JPanel implements KeyListener,
         /*
         I think there's some performance hits by concatenating the string so much but whatever
          */
-        g.drawString("Bricks remaining: " + (Brick.size()-levelBrickCount), 40, 300);
+        g.drawString("Bricks remaining: " + (Brick.size() - levelBrickCount), 40, 300);
         g.drawString("Score: " + totalCount, 40, 350);
         g.drawString("Paddles remaining: " + lives, 40, 325);
 
@@ -135,8 +146,6 @@ public class PongGame extends JPanel implements KeyListener,
             f = new Font("Arial", Font.BOLD, 20);
             g.setFont(f);
             g.drawString(status, 70, 120);
-            ballFallDown = true;
-            bricksOver = true;
         }
 
     }
@@ -157,6 +166,7 @@ public class PongGame extends JPanel implements KeyListener,
 
         while (!ballFallDown && !bricksOver) {
             if (start) {
+                requestFocus(); //when level selection is pressed, this allows the game to keep running
                 int movespeed = levels.get(level).getBatSpeed();
 
                 if (levelBrickCount == Brick.size()) {
@@ -168,10 +178,10 @@ public class PongGame extends JPanel implements KeyListener,
                 Ball.y += movey;
                 for (int i = 0; i < Brick.size(); i++) {
                     if (Brick.get(i) != null && Brick.get(i).intersects(Ball)) {
-                            Brick.set(i, null);
-                            movey = -movey;
-                            levelBrickCount++;
-                            totalCount++;
+                        Brick.set(i, null);
+                        movey = -movey;
+                        levelBrickCount++;
+                        totalCount++;
 
                     }
                 }
@@ -220,27 +230,34 @@ public class PongGame extends JPanel implements KeyListener,
             }
 
         }
-
+        //this sequence keeps the thread alive after restarting, even with no user input
+        while (ballFallDown) {
+            try {
+                Thread.sleep(1);
+            } catch (Exception ex) {
+            }
+        }
+        restart(level);
+        run();
     }
 
-    public void restart() {
+    public void restart(int level) {
 
         requestFocus(true);
-
         Ball = new Rectangle(160, 218, 5, 5);
-        Bat = levels.get(0).getBat();
+        Bat = levels.get(level).getBat();
         Brick = new ArrayList<>();
-        for (Rectangle b : levels.get(0).paintBrick()) {
-            Brick.add(b);
-        }
+        Brick.addAll(levels.get(level).paintBrick());
         movex = -1;
         movey = -1;
         ballFallDown = false;
         bricksOver = false;
+        lives = 3;
         totalCount = 0;
+        levelBrickCount = 0;
         status = null;
+        levels.get(level).paintBrick();
 
-        levels.get(0).paintBrick();
         repaint();
     }
 
@@ -277,7 +294,40 @@ public class PongGame extends JPanel implements KeyListener,
         String str = e.getActionCommand();
         if (str.equals("restart")) {
             start = true;
-            this.restart();
+            this.restart(0);
+        }
+        if (str.equals("level selection")) {
+
+            while (true) {
+                try {
+                    String stringCode = JOptionPane.showInputDialog("Enter the code of the level");
+                    if (stringCode == null) {
+                        break;
+                    }
+                    if (stringCode.isEmpty()) {
+                        JOptionPane.showMessageDialog(null,
+                                "Either enter a valid code or if you don't have one simply close the window",
+                                "Invalid Code",
+                                JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+                    int code = Integer.parseInt(stringCode);
+                    if (codes.containsKey(code)) {
+                        newLevelLoad = true;
+                        start = true;
+                        totalCount = 0;
+                        lives = 3;
+                        levelBrickCount = 0;
+                        restart(codes.get(code));
+                        break;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "Either enter a valid code or if you don't have one simply close the window",
+                            "Invalid Code",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
     }
 }

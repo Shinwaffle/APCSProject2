@@ -12,9 +12,9 @@ public class Level_15 implements Level{
         ArrayList<Rectangle> Brick = new ArrayList<>();
         int brickx = 55;
         int bricky = 50;
-        int index = 11;
+        int index = 17;
 
-        for (int i = 0; i < 36; i++) {
+        for (int i = 0; i < 48; i++) {
             ArrayList<Float> colorIndex = new ArrayList<>();
             colorIndex.add((float) Math.random());
             colorIndex.add((float) Math.random());
@@ -51,5 +51,10 @@ public class Level_15 implements Level{
     @Override
     public ArrayList<ArrayList<Float>> getColors() {
         return color;
+    }
+
+    @Override
+    public int getCode() {
+        return 8392;
     }
 }

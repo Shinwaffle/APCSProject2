@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Level_1 implements Level{
 
     ArrayList<ArrayList<Float>> color = new ArrayList<>();
+    int amount = 12;
 
     @Override
     public ArrayList<Rectangle> paintBrick() {
@@ -14,7 +15,7 @@ public class Level_1 implements Level{
         int bricky = 50;
         int index = 5;
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < amount; i++) {
             ArrayList<Float> colorIndex = new ArrayList<>();
             colorIndex.add((float) Math.random());
             colorIndex.add((float) Math.random());
@@ -50,7 +51,19 @@ public class Level_1 implements Level{
 
     @Override
     public ArrayList<ArrayList<Float>> getColors() {
-        return color == null ? new ArrayList<>() : color;
+        for (int i = 0; i < 12; i++) {
+            ArrayList<Float> colorIndex = new ArrayList<>();
+            colorIndex.add((float) Math.random());
+            colorIndex.add((float) Math.random());
+            colorIndex.add((float) Math.random());
+            color.add(colorIndex);
+        }
+        return color;
+    }
+
+    @Override
+    public int getCode() {
+        return 1337;
     }
 }
 
