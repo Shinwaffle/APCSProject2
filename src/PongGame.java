@@ -315,9 +315,6 @@ public class PongGame extends JPanel implements KeyListener,
                     if (codes.containsKey(code)) {
                         newLevelLoad = true;
                         start = true;
-                        totalCount = 0;
-                        lives = 3;
-                        levelBrickCount = 0;
                         restart(codes.get(code));
                         break;
                     }
