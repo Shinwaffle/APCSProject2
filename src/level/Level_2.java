@@ -45,7 +45,7 @@ public class Level_2 implements Level{
       ArrayList<ArrayList<Integer>> color = new ArrayList<>();
         
       for (int i = 0; i < 30; i++) {
-        if (i <= 5) {
+        if (i <= 11) {
             ArrayList<Integer> colorIndex = new ArrayList<>();
             colorIndex.add(209);
             colorIndex.add(33);
