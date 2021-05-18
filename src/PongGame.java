@@ -4,7 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import level.Level;
 
 public class PongGame extends JPanel implements KeyListener,
         ActionListener, Runnable {
@@ -13,24 +18,22 @@ public class PongGame extends JPanel implements KeyListener,
     static boolean right = false;
     static boolean left = false;
 
-    int ballx = 160;
-    int bally = 218;
+    List<Level> levels = getLevels();
 
-    int batx = 160;
-    int baty = 245;
+    // the below should be altered by the Level
 
-    int brickx = 70;
-    int bricky = 50;
-
-    Rectangle Ball = new Rectangle(ballx, bally, 5, 5);
-    Rectangle Bat = new Rectangle(batx, baty, 40, 5);
+    Rectangle Ball = new Rectangle(160, 218, 5, 5);
+    Rectangle Bat;
 
     int lives = 3;
-    int amount = 12; //change this value to update amount of bricks
+    int level = 0;
     ArrayList<Rectangle> Brick = new ArrayList<>();
-    ArrayList<ArrayList<Float>> color = new ArrayList<>();
 
     public PongGame() {
+        for (Rectangle b : levels.get(0).paintBrick()) {
+            Brick.add(b);
+        }
+        Bat = levels.get(0).getBat();
         start = false;
         addKeyListener(this);
         setFocusable(true);
@@ -54,6 +57,30 @@ public class PongGame extends JPanel implements KeyListener,
 
     }
 
+    public List<Level> getLevels() {
+        File path = new File(".\\src\\level");
+        ArrayList<String> list = new ArrayList<>();
+        ArrayList<Level> levels = new ArrayList<>();
+        for (String file : Objects.requireNonNull(path.list())) {
+            if (file.equals("Level.java")) {
+                continue;
+            }
+            if (file.endsWith(".java")) {
+                list.add("level." + file.substring(0, file.length()-5));
+            }
+        }
+        for (String levelName : list) {
+            try {
+                Object name = Class.forName(levelName).getConstructor().newInstance();
+                if (name instanceof Level) {
+                    levels.add((Level) name);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return levels;
+    }
 
     @Override
     public void paint(Graphics g) {
@@ -73,13 +100,21 @@ public class PongGame extends JPanel implements KeyListener,
         g.fillOval(Ball.x, Ball.y, Ball.width, Ball.height);
 
         g.fill3DRect(Bat.x, Bat.y, Bat.width, Bat.height, true);
-
+        /*
+        this check is before the actual brick painting as this check loads the level's bricks
+         */
+        if (bricksOver) {
+            bricksOver = false;
+            level++;
+            levelBrickCount = 0;
+            Brick = levels.get(level).paintBrick();
+        }
         for (int i = 0; i < Brick.size(); i++) {
             if (Brick.get(i) != null) {
-                ArrayList<Float> colorIndex = color.get(i);
+                ArrayList<Float> colorIndex = levels.get(level).getColors().get(i);
                 g.setColor(new Color(colorIndex.get(0), colorIndex.get(1), colorIndex.get(2)));
                 g.fill3DRect(Brick.get(i).x, Brick.get(i).y, Brick.get(i).width,
-                        Brick(i).height, true);
+                        Brick.get(i).height, true);
             }
         }
 
@@ -87,11 +122,11 @@ public class PongGame extends JPanel implements KeyListener,
         /*
         I think there's some performance hits by concatenating the string so much but whatever
          */
-        g.drawString("Bricks remaining: " + (Brick.length-count), 40, 300);
-        g.drawString("Score: " + count, 40, 350);
+        g.drawString("Bricks remaining: " + (Brick.size()-levelBrickCount), 40, 300);
+        g.drawString("Score: " + totalCount, 40, 350);
         g.drawString("Paddles remaining: " + lives, 40, 325);
 
-        if (ballFallDown || bricksOver) {
+        if (ballFallDown) {
             f = new Font("Arial", Font.BOLD, 20);
             g.setFont(f);
             g.drawString(status, 70, 120);
@@ -101,63 +136,45 @@ public class PongGame extends JPanel implements KeyListener,
 
     }
 
-    public void paintBrick() {
-        int index = 5;
-        for (int i = 0; i < Brick.length; i++) {
-            ArrayList<Float> colorIndex = new ArrayList<>();
-            colorIndex.add((float) Math.random());
-            colorIndex.add((float) Math.random());
-            colorIndex.add((float) Math.random());
-            color.add(colorIndex);
-                
-            Brick.add(new Rectangle(brickx, bricky, 30, 10));
-            if (i == index) {
-                brickx = 39;
-                bricky += 12;
-                index = index + 6;
-            }
-
-            brickx += 31;
-        }
-    }
-
     int movex = -1;
     int movey = -1;
     boolean ballFallDown = false;
     boolean bricksOver = false;
-    int count = 0;
+    int totalCount = 0; //used to count total amount of bricks destroyed in the game
+    int levelBrickCount = 0;
 
     String status;
 
     @Override
     public void run() {
 
-        paintBrick();
+        levels.get(0).paintBrick();
 
         while (!ballFallDown && !bricksOver) {
             if (start) {
+                int movespeed = levels.get(level).getBatSpeed();
 
-                if (count == Brick.length) {
-                    status = "YOU WON THE GAME";
+                if (levelBrickCount == Brick.size()) {
                     bricksOver = true;
                     repaint();
                 }
                 repaint();
                 Ball.x += movex;
                 Ball.y += movey;
-                for (int i = 0; i < Brick.length; i++) {
-                    if (Brick[i] != null && Brick[i].intersects(Ball)) {
-                            Brick[i] = null;
+                for (int i = 0; i < Brick.size(); i++) {
+                    if (Brick.get(i) != null && Brick.get(i).intersects(Ball)) {
+                            Brick.set(i, null);
                             movey = -movey;
-                            count++;
+                            levelBrickCount++;
+                            totalCount++;
 
                     }
-                } //250
+                }
                 if (Ball.y >= 250) {
                     if (lives != 0) {
                         lives--;
-                        ballx = 160;
-                        bally = 150;
+                        Ball.x = 160;
+                        Ball.y = 150;
                         movey = -movey;
                         movex = -movex;
                     } else {
@@ -168,11 +185,11 @@ public class PongGame extends JPanel implements KeyListener,
                 }
                 if (left) {
 
-                    Bat.x -= 5;
+                    Bat.x -= movespeed;
                     right = false;
                 }
                 if (right) {
-                    Bat.x += 5;
+                    Bat.x += movespeed;
                     left = false;
                 }
                 if (Bat.x <= 4) {
@@ -193,7 +210,7 @@ public class PongGame extends JPanel implements KeyListener,
 
             }
             try {
-                Thread.sleep(8);
+                Thread.sleep(levels.get(level).getBallSpeed());
             } catch (Exception ex) {
             }
 
@@ -204,27 +221,21 @@ public class PongGame extends JPanel implements KeyListener,
     public void restart() {
 
         requestFocus(true);
-        ballx = 160;
-        bally = 218;
 
-        batx = 160;
-        baty = 245;
-
-        brickx = 70;
-        bricky = 50;
-
-        Ball = new Rectangle(ballx, bally, 5, 5);
-        Bat = new Rectangle(batx, baty, 40, 5);
-        Brick = new Rectangle[amount];
-
+        Ball = new Rectangle(160, 218, 5, 5);
+        Bat = levels.get(0).getBat();
+        Brick = new ArrayList<>();
+        for (Rectangle b : levels.get(0).paintBrick()) {
+            Brick.add(b);
+        }
         movex = -1;
         movey = -1;
         ballFallDown = false;
         bricksOver = false;
-        count = 0;
+        totalCount = 0;
         status = null;
 
-        paintBrick();
+        levels.get(0).paintBrick();
         repaint();
     }
 
