@@ -3,7 +3,7 @@ package level;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Level_1_10 implements Level{
+public class Level_1_9 implements Level{
 
     ArrayList<ArrayList<Integer>> color = new ArrayList<>();
 
@@ -18,7 +18,7 @@ public class Level_1_10 implements Level{
             if (i == index) {
                 brickx = 55;
                 bricky += 12;
-                index = index + 13;
+                index += 13;
             }
             Brick.add(new Rectangle(brickx, bricky, 15, 10));
             brickx += 17;
@@ -44,12 +44,14 @@ public class Level_1_10 implements Level{
 
     @Override
     public ArrayList<ArrayList<Integer>> getColors() {
-        for (int i = 0; i < 52; i++) {
-        ArrayList<Integer> colorIndex = new ArrayList<>();
-            colorIndex.add((int) (Math.random()*256));
-            colorIndex.add((int) (Math.random()*256));
-            colorIndex.add((int) (Math.random()*256));
-            color.add(colorIndex);
+        if (color.size() != 52) {
+            for (int i = 0; i < 52; i++) {
+                ArrayList<Integer> colorIndex = new ArrayList<>();
+                colorIndex.add(255);
+                colorIndex.add(255 - (i*4));
+                colorIndex.add(255 - (i*4));
+                color.add(colorIndex);
+            }
         }
         return color;
     }

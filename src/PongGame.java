@@ -94,6 +94,7 @@ public class PongGame extends JPanel implements KeyListener,
                 e.printStackTrace();
             }
         }
+        System.out.println(temporaryLevelList);
         return temporaryLevelList;
     }
 

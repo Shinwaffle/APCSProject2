@@ -45,12 +45,14 @@ public class Level_1_1 implements Level{
 
     @Override
     public ArrayList<ArrayList<Integer>> getColors() {
-        for (int i = 0; i < 12; i++) {
-            ArrayList<Integer> colorIndex = new ArrayList<>();
-            colorIndex.add((int) (Math.random()*256));
-            colorIndex.add((int) (Math.random()*256));
-            colorIndex.add((int) (Math.random()*256));
-            color.add(colorIndex);
+        if (color.size() != 12) {
+            for (int i = 0; i < 12; i++) {
+                ArrayList<Integer> colorIndex = new ArrayList<>();
+                colorIndex.add((int) (Math.random() * 256));
+                colorIndex.add((int) (Math.random() * 256));
+                colorIndex.add((int) (Math.random() * 256));
+                color.add(colorIndex);
+            }
         }
         return color;
     }
