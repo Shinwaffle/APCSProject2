@@ -15,7 +15,7 @@ public class Level_1_6 implements Level{
         int index = 5;
 
         for (int i = 0; i < 36; i++) {
-            if (i == 12 || i == 18 || i == 24 || i == 25 || i == 28 || i == 30 || i == 31 || i == 34 || i == 35) {
+            if (i == 12 || i == 18 || i == 17 || i == 23 || i == 29|| i == 24 || i == 25 || i == 28 || i == 30 || i == 31 || i == 34 || i == 35) {
               Brick.add(null);
             } else {
               Brick.add(new Rectangle(brickx, bricky, 30, 10));   
@@ -56,8 +56,8 @@ public class Level_1_6 implements Level{
 
     @Override
     public ArrayList<ArrayList<Integer>> getColors() {
-        if (color.size() != 36) {
-            for (int i = 0; i < 36; i++) {
+        if (color.size() != 37) {
+            for (int i = 0; i < 37; i++) {
                 if ((i >= 0 && i <= 6) || i == 11) {
                     ArrayList<Integer> colorIndex = new ArrayList<>();
                     colorIndex.add(0);
@@ -67,7 +67,7 @@ public class Level_1_6 implements Level{
                 } else if (
                   (i >= 7 && i <= 10) 
                   || (i >= 13 && i <= 16)
-                  || (i >= 19 && i <= 22)) {
+                  || (i >= 19 && i <= 23)) {
                    ArrayList<Integer> colorIndex = new ArrayList<>();
                     colorIndex.add(200);
                     colorIndex.add(61);
