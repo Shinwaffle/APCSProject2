@@ -78,6 +78,6 @@ public class Level_1_5 implements Level {
 
     @Override
     public int getCode() {
-        return 0007;
+        return 7000;
     }
 }

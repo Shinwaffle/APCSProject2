@@ -40,6 +40,9 @@ public class PongGame extends JPanel implements KeyListener,
             i++;
         } // i could restructure this to be way better but whatever its 11 pm
         Bat = levels.get(0).getBat();
+        for (Integer s : codes.keySet()) {
+            System.out.println(s);
+        }
         start = false;
         addKeyListener(this);
         setFocusable(true);
@@ -94,7 +97,6 @@ public class PongGame extends JPanel implements KeyListener,
                 e.printStackTrace();
             }
         }
-        System.out.println(temporaryLevelList);
         return temporaryLevelList;
     }
 
