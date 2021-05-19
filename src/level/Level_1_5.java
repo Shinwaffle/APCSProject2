@@ -5,33 +5,85 @@ import java.util.ArrayList;
 
 public class Level_1_5 implements Level {
 
+    ArrayList<ArrayList<Integer>> color = new ArrayList<>();
     @Override
     public ArrayList<Rectangle> paintBrick() {
-        return null;
+        ArrayList<Rectangle> Brick = new ArrayList<>();
+        int brickx = 70;
+        int bricky = 50;
+        int index = 11;
+
+        for (int i = 0; i < 30; i++) {
+            Brick.add(new Rectangle(brickx, bricky, 30, 10));
+            if (i == 5) {
+                for (int d = 0; d < 6; d++) {
+                    Brick.add(null);
+                }
+                brickx = 39;
+                bricky += 12;
+            }
+            if (i == index) {
+                brickx = 39;
+                bricky += 12;
+                index = index + 6;
+            }
+            brickx += 31;
+
+        }
+        return Brick;
     }
 
     @Override
     public int getBallSpeed() {
-        return 0;
+        return 5;
     }
 
     @Override
     public Rectangle getBat() {
-        return null;
+        return new Rectangle(160, 245, 50, 7);;
     }
 
     @Override
     public int getBatSpeed() {
-        return 0;
+        return 3;
     }
 
     @Override
     public ArrayList<ArrayList<Integer>> getColors() {
-        return null;
+         if (color.size() != 36) {
+            for (int i = 0; i < 36; i++) { // (i*6)+39
+                if (i == 0 || i == 2 || i == 3 || i == 5 || i == 19 || i == 22 || i == 31 || i == 34) {
+                    ArrayList<Integer> colorIndex = new ArrayList<>();
+                    colorIndex.add(255);
+                    colorIndex.add(255);
+                    colorIndex.add(255);
+                    color.add(colorIndex);
+                } else if (i == 1 || i == 4) {
+                    ArrayList<Integer> colorIndex = new ArrayList<>();
+                    colorIndex.add(0);
+                    colorIndex.add(0);
+                    colorIndex.add(0);
+                    color.add(colorIndex);   
+                } else if (i > 23 && i < 30) {
+                    ArrayList<Integer> colorIndex = new ArrayList<>();
+                    colorIndex.add(255);
+                    colorIndex.add(0);
+                    colorIndex.add(0);
+                    color.add(colorIndex);  
+                } else {
+                    ArrayList<Integer> colorIndex = new ArrayList<>();
+                    colorIndex.add(0);
+                    colorIndex.add(255-((i*6)+39));
+                    colorIndex.add(0);
+                    color.add(colorIndex);  
+                }
+            }
+        }
+        return color;
     }
 
     @Override
     public int getCode() {
-        return 0;
+        return 0007;
     }
 }
