@@ -124,6 +124,8 @@ public class PongGame extends JPanel implements KeyListener,
             levelBrickCount = 0;
             Ball = new Rectangle(160, 218, 5, 5);
             Brick = levels.get(level).paintBrick();
+            movex = -1;
+            movey = -1;
         }
         ArrayList<ArrayList<Integer>> colors = levels.get(level).getColors();
         for (int i = 0; i < Brick.size(); i++) {
@@ -169,8 +171,8 @@ public class PongGame extends JPanel implements KeyListener,
             if (start) {
                 requestFocus(); //when level selection is pressed, this allows the game to keep running
                 int movespeed = levels.get(level).getBatSpeed();
-
                 if (levelBrickCount == Brick.size()) {
+                    lives++;
                     bricksOver = true;
                     repaint();
                 }
@@ -183,7 +185,9 @@ public class PongGame extends JPanel implements KeyListener,
                         movey = -movey;
                         levelBrickCount++;
                         totalCount++;
-
+                        if (totalCount % 15 == 0) {
+                            lives++;
+                        }
                     }
                 }
                 if (Ball.y >= 250) {
