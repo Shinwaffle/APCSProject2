@@ -14,13 +14,14 @@ public class Level_1_5 implements Level {
         int index = 11;
 
         for (int i = 0; i < 30; i++) {
-            Brick.add(new Rectangle(brickx, bricky, 30, 10));
             if (i == 5) {
                 for (int d = 0; d < 6; d++) {
                     Brick.add(null);
                 }
                 brickx = 39;
                 bricky += 12;
+            } else {
+             Brick.add(new Rectangle(brickx, bricky, 15, 5));   
             }
             if (i == index) {
                 brickx = 39;
