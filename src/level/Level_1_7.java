@@ -14,7 +14,7 @@ public class Level_1_7 implements Level{
         int bricky = 30;
         int index = 11;
 
-        for (int i = 0; i < 72; i++) {
+        for (int i = 0; i < 144; i++) {
             
             if (i % 5 == 0) {
               Brick.add(null);
@@ -49,11 +49,11 @@ public class Level_1_7 implements Level{
 
     @Override
     public ArrayList<ArrayList<Integer>> getColors() {
-        if (color.size() != 72) {
-            for (int i = 0; i < 72; i++) { // (72*3)+39
+        if (color.size() != 144) {
+            for (int i = 0; i < 144; i++) { // (72*3)+39
                 ArrayList<Integer> colorIndex = new ArrayList<>();
-                    colorIndex.add(255 - ((i*3)+39));
-                    colorIndex.add((72*3)+39);
+                    colorIndex.add(255 - ((i)+39));
+                    colorIndex.add((i)+39);
                     colorIndex.add(100);
                     color.add(colorIndex);
             }
