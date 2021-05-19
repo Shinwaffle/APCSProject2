@@ -11,18 +11,11 @@ public class Level_1_5 implements Level {
         ArrayList<Rectangle> Brick = new ArrayList<>();
         int brickx = 70;
         int bricky = 50;
-        int index = 11;
+        int index = 5;
 
-        for (int i = 0; i < 30; i++) {
-            if (i == 5) {
-                for (int d = 0; d < 6; d++) {
-                    Brick.add(null);
-                }
-                brickx = 39;
-                bricky += 12;
-            } else {
+        for (int i = 0; i < 36; i++) {
              Brick.add(new Rectangle(brickx, bricky, 15, 5));   
-            }
+    
             if (i == index) {
                 brickx = 39;
                 bricky += 12;
@@ -41,7 +34,7 @@ public class Level_1_5 implements Level {
 
     @Override
     public Rectangle getBat() {
-        return new Rectangle(160, 245, 50, 7);;
+        return new Rectangle(160, 245, 50, 7);
     }
 
     @Override
