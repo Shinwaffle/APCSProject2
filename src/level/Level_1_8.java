@@ -16,7 +16,7 @@ public class Level_1_8 implements Level{
 
         for (int i = 0; i < 42; i++) {
            if (i == 1 ||i == 2 ||i == 4 ||i == 7 ||i == 8 ||i == 10 ||i == 13 ||i == 14 ||i == 16 ||i == 22 ||i == 25 ||i == 26 ||i == 28 ||
-              i == 31 ||i == 32 ||i == 34 ||i == 37 ||i == 38 ||i == 41 ||) {
+              i == 31 ||i == 32 ||i == 34 ||i == 37 ||i == 38 ||i == 40) {
               Brick.add(null);
            } else if (i == 11) {
               Brick.add(null);
