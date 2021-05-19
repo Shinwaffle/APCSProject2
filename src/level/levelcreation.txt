@@ -2,4 +2,8 @@ when creating a level, make sure it's called
 "Level" followed by a "_"
 for example: Level_15
 Whatever is at the end will just alter the order the levels come out.
-Aka, however you see them in your explorer, that's gonna the order of the levels
+Here's how you should order the levels:
+there's "stages" in a sense.
+Level_1_1 is stage 1 level one
+Level_1_6 is stage 2 level six
+and so on.

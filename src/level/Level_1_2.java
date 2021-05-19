@@ -3,7 +3,7 @@ package level;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Level_2 implements Level{
+public class Level_1_2 implements Level{
 
     @Override
     public ArrayList<Rectangle> paintBrick() {

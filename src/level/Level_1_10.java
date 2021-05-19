@@ -3,26 +3,25 @@ package level;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Level_1 implements Level{
+public class Level_1_10 implements Level{
 
     ArrayList<ArrayList<Integer>> color = new ArrayList<>();
-    int amount = 12;
 
     @Override
     public ArrayList<Rectangle> paintBrick() {
         ArrayList<Rectangle> Brick = new ArrayList<>();
-        int brickx = 70;
+        int brickx = 55;
         int bricky = 50;
-        int index = 5;
+        int index = 13;
 
-        for (int i = 0; i < amount; i++) {
-            Brick.add(new Rectangle(brickx, bricky, 30, 10));
+        for (int i = 0; i < 52; i++) {
             if (i == index) {
-                brickx = 39;
+                brickx = 55;
                 bricky += 12;
-                index = index + 6;
+                index = index + 13;
             }
-            brickx += 31;
+            Brick.add(new Rectangle(brickx, bricky, 15, 10));
+            brickx += 17;
 
         }
         return Brick;
@@ -30,23 +29,23 @@ public class Level_1 implements Level{
 
     @Override
     public int getBallSpeed() {
-        return 6;
+        return 7;
     }
 
     @Override
     public Rectangle getBat() {
-        return new Rectangle(160, 245, 40, 5);
+        return new Rectangle(160, 245, 20, 5);
     }
 
     @Override
     public int getBatSpeed() {
-        return 3;
+        return 4;
     }
 
     @Override
     public ArrayList<ArrayList<Integer>> getColors() {
-        for (int i = 0; i < 12; i++) {
-            ArrayList<Integer> colorIndex = new ArrayList<>();
+        for (int i = 0; i < 52; i++) {
+        ArrayList<Integer> colorIndex = new ArrayList<>();
             colorIndex.add((int) (Math.random()*256));
             colorIndex.add((int) (Math.random()*256));
             colorIndex.add((int) (Math.random()*256));
@@ -57,7 +56,6 @@ public class Level_1 implements Level{
 
     @Override
     public int getCode() {
-        return 1337;
+        return 8392;
     }
 }
-
