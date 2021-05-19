@@ -122,6 +122,7 @@ public class PongGame extends JPanel implements KeyListener,
             bricksOver = false;
             level++;
             levelBrickCount = 0;
+            Ball = new Rectangle(160, 218, 5, 5);
             Brick = levels.get(level).paintBrick();
         }
         ArrayList<ArrayList<Integer>> colors = levels.get(level).getColors();
@@ -138,9 +139,10 @@ public class PongGame extends JPanel implements KeyListener,
         /*
         I think there's some performance hits by concatenating the string so much but whatever
          */
-        g.drawString("Bricks remaining: " + (Brick.size() - levelBrickCount), 40, 300);
-        g.drawString("Score: " + totalCount, 40, 350);
+        g.drawString("Bricks remaining: " + (Brick.size() - levelBrickCount), 40, 275);
+        g.drawString("Score: " + totalCount, 40, 300);
         g.drawString("Paddles remaining: " + lives, 40, 325);
+        g.drawString("Code: "+levels.get(level).getCode(), 40, 350);
 
         if (ballFallDown) {
             f = new Font("Arial", Font.BOLD, 20);
@@ -156,7 +158,6 @@ public class PongGame extends JPanel implements KeyListener,
     boolean bricksOver = false;
     int totalCount = 0; //used to count total amount of bricks destroyed in the game
     int levelBrickCount = 0;
-
     String status;
 
     @Override
