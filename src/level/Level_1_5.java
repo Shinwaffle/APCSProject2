@@ -9,7 +9,7 @@ public class Level_1_5 implements Level {
     @Override
     public ArrayList<Rectangle> paintBrick() {
         ArrayList<Rectangle> Brick = new ArrayList<>();
-        int brickx = 70;
+        int brickx = 80;
         int bricky = 50;
         int index = 5;
 
@@ -17,7 +17,7 @@ public class Level_1_5 implements Level {
              Brick.add(new Rectangle(brickx, bricky, 15, 5));   
     
             if (i == index) {
-                brickx = 39;
+                brickx = 49;
                 bricky += 12;
                 index = index + 6;
             }
