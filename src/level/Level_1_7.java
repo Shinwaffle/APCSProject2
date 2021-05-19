@@ -51,7 +51,11 @@ public class Level_1_7 implements Level{
     public ArrayList<ArrayList<Integer>> getColors() {
         if (color.size() != 72) {
             for (int i = 0; i < 72; i++) { // (72*3)+39
-                
+                ArrayList<Integer> colorIndex = new ArrayList<>();
+                    colorIndex.add(255 - ((i*3)+39));
+                    colorIndex.add((72*3)+39);
+                    colorIndex.add(100);
+                    color.add(colorIndex);
             }
         }
         return color;
